@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [AntrianController::class, 'antrian'])->name('antrian');
 // Route::post('/', [AntrianController::class, 'post'])->name('postAntrian');
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/authh', [AuthController::class, 'authenticate'])->name('loginPost');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login-post', [AuthController::class, 'postLogin'])->name('loginPost');
+// Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Route::group(['middleware' => ['auth']], function () {
 
