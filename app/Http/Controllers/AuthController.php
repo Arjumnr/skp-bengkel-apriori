@@ -16,16 +16,15 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         try{
+
             $data = [
                 'username' => $request->input('username'),
                 'password' => $request->input('password'),
             ];
     
             if (Auth::Attempt($data)) {
-                dd ('ok');
-                return redirect('home');
+                return redirect('/');
             }else{
-                dd ('errooorr');
                 Session::flash('error', 'Email atau Password Salah');
                 return redirect('/login');
             }
