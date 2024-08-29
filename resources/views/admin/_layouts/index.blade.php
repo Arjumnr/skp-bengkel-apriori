@@ -20,14 +20,12 @@
   <!-- Vendor CSS Files -->
   @stack('css-vendor')
 
-  <!-- Template Main CSS File -->
-  <link href="{{ asset('themes/assets/css/style.css') }}" rel="stylesheet">
-
   @stack('css-custom')
 
+   <!-- Template Main CSS File -->
+   <link href="{{ asset('themes/assets/css/style.css') }}" rel="stylesheet">
+
   
-
-
 </head>
 
 <body>
@@ -42,15 +40,6 @@
 
   <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
 
     @yield('content')
 
@@ -67,10 +56,11 @@
   
 
   <!-- Template Main JS File -->
-  <script src="{{ asset('themes/assets/js/main.js') }}"></script>
 
   @stack('javascript-global')
   @stack('javascript-vendor')
+  <script src="{{ asset('themes/assets/js/main.js') }}"></script>
+
 </body>
 
 </html>
