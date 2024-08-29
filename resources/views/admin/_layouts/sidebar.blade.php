@@ -2,19 +2,34 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : 'collapsed'  }}" href="{{ route('dashboard') }}">
-            <i class="bi bi-grid"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
-    
-    <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">
-            <i class="bi bi-grid"></i>
-            <span>Produk</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : 'collapsed' }}"
+                href="{{ route('dashboard') }}">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('produk.index') ? 'active' : 'collapsed' }}" href="{{ route('produk.index') }}">
+                <i class="bi bi-grid"></i>
+                <span>Produk</span>
+            </a>
+        </li>
+
+        {{-- <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">
+                <i class="bi bi-grid"></i>
+                <span>Transaksi</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">
+                <i class="bi bi-grid"></i>
+                <span>Transaksi Item</span>
+            </a>
+        </li> --}}
 
 
         <li class="nav-item">

@@ -18,18 +18,19 @@ Route::group(
             ['prefix' => 'admin'],
             function () {
                 
-                Route::group(
-                    ['prefix' => 'produk'],
-                    function () {
-                        Route::get('/', 'ProductController@index')->name('produk');
+                // Route::group(
+                //     ['prefix' => 'produk'],
+                //     function () {
+                        Route::resource('produk', 'ProductController');
+                        // Route::get('/', 'ProductController@index')->name('produk.index');
                         // Route::get('/data', 'ProductController@paginated')->name('product.data');
-                        // Route::post('/', 'ProductController@store')->name('product.store');
+                        // Route::post('/', 'ProductController@store')->name('produk.store');
                         // Route::get('/{id}', 'ProductController@show')->name('product.show');
                         // Route::put('/{id}', 'ProductController@update')->name('product.update');
                         // Route::delete('/{id}', 'ProductController@destroy')->name('product.destroy');
                   
-                    }
-                );
+                    // }
+                // );
             }
         );
     }
