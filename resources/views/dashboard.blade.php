@@ -18,6 +18,11 @@
     <script src="{{ asset('themes/assets/vendor/quill/quill.min.js') }}"></script>
     <script src="{{ asset('themes/assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('themes/assets/vendor/php-email-form/validate.js') }}"></script>
+
+    {{-- error  tinymce --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
 @endpush
 @section('content')
     <div class="pagetitle">

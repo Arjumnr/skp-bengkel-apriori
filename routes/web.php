@@ -19,14 +19,14 @@ Route::group(
             function () {
                 
                 Route::group(
-                    ['prefix' => 'barang'],
+                    ['prefix' => 'produk'],
                     function () {
-                        Route::get('/', 'BarangController@index')->name('barang');
-                        // Route::get('/data', 'BarangController@paginated')->name('barang.data');
-                        // Route::post('/', 'BarangController@store')->name('barang.store');
-                        // Route::get('/{id}', 'BarangController@show')->name('barang.show');
-                        // Route::put('/{id}', 'BarangController@update')->name('barang.update');
-                        // Route::delete('/{id}', 'BarangController@destroy')->name('barang.destroy');
+                        Route::get('/', 'ProductController@index')->name('produk');
+                        // Route::get('/data', 'ProductController@paginated')->name('product.data');
+                        // Route::post('/', 'ProductController@store')->name('product.store');
+                        // Route::get('/{id}', 'ProductController@show')->name('product.show');
+                        // Route::put('/{id}', 'ProductController@update')->name('product.update');
+                        // Route::delete('/{id}', 'ProductController@destroy')->name('product.destroy');
                   
                     }
                 );

@@ -10,9 +10,9 @@
     </li>
     
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('barang') ? 'active' : 'collapsed' }}" href="{{ route('barang') }}">
+        <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">
             <i class="bi bi-grid"></i>
-            <span>Barang</span>
+            <span>Produk</span>
         </a>
     </li>
 
