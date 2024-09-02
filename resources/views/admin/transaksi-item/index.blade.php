@@ -6,6 +6,8 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/2.1.4/css/dataTables.bootstrap5.css" rel="stylesheet">
+
+    
 @endpush
 
 @push('javascript-vendor')
@@ -31,11 +33,11 @@
 
 @section('content')
     <div class="pagetitle">
-        <h1>Transaksi</h1>
+        <h1>Transaksi Item</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Transaksi</li>
+                <li class="breadcrumb-item active">Transaksi Item</li>
             </ol>
         </nav>
     </div>
@@ -44,13 +46,23 @@
             <div class="col-12">
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
+                        <!-- Tombol Add dengan ikon -->
+                        <div class="d-flex mt-3 justify-content-end">
+                            <button type="button" class="btn btn-primary mb-3" id="btnTambah" data-bs-toggle="modal"
+                                data-bs-target="#basicModal">
+                                <i class="bi bi-calendar2-plus me-1"></i> Tambah
+                            </button>
+                        </div>
+
                         <!-- Tabel -->
-                        <div class="table-responsive mt-3">
+                        <div class="table-responsive">
                             <table class="table table-striped" id="data-table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Pembeli</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Produk</th>
+                                        <th scope="col">Jumlah</th>
                                         <th scope="col">Bayar</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
@@ -65,7 +77,7 @@
             </div>
         </div>
     </section>
-    @include('admin.transaksi.modal')
+    @include('admin.transaksi-item.modal')
 @endsection
 
-@include('admin.transaksi.js')
+@include('admin.transaksi-item.js')

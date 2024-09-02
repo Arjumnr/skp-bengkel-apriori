@@ -16,6 +16,20 @@
                 <span>Produk</span>
             </a>
         </li>
+        
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('transaksi.index') ? 'active' : 'collapsed' }}" href="{{ route('transaksi.index') }}">
+                <i class="bi bi-grid"></i>
+                <span>Transaksi</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('transaksi-item.index') ? 'active' : 'collapsed' }}" href="{{ route('transaksi-item.index') }}">
+                <i class="bi bi-grid"></i>
+                <span>Transaksi Item</span>
+            </a>
+        </li>
 
         {{-- <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">

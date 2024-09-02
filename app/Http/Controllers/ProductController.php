@@ -23,7 +23,6 @@ class ProductController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            // return response()->json(['data' => $data]);
             return view('admin.produk.index', compact('data'));
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
@@ -39,7 +38,6 @@ class ProductController extends Controller
                     'stock' => $request->stock,
                     'capital' => $request->capital,
                     'sell' => $request->sell,
-
                 ]
             );
             return response()->json(['data' => $request->all(), 'status' => 'success', 'message' => 'Save data successfully.', ]);

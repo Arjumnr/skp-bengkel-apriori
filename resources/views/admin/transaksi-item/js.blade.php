@@ -2,24 +2,35 @@
     <script type="text/javascript">
         $(document).ready(function() {
             console.log('ready!');
+
+            
             // $('#modalID').modal('show');
 
             var table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('transaksi.index') }}",
+                ajax: "{{ route('transaksi-item.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'name',
+                        data: 'transaksi_id',
                         name: 'name'
                     },
                     {
-                        data: 'total_price',
-                        name: 'total_price'
+                        data: 'product_id',
+                        name: 'name'
                     },
+                    {
+                        data: 'qty',
+                        name: 'qty'
+                    },
+                    {
+                        data: 'price',
+                        name: 'price'
+                    },
+
                     {
                         data: 'action',
                         name: 'action',
@@ -35,12 +46,18 @@
                 table = $('#data-table').DataTable();
             } else {
                 table = $('#data-table').DataTable({
-                    "ajax": "{{ route('transaksi.index') }}",
+                    "ajax": "{{ route('transaksi-item.index') }}",
                     "columns": [{
-                            "data": "name"
+                            "data": "transaksi_id"
                         },
                         {
-                            "data": "total_price"
+                            "data": "product_id"
+                        },
+                        {
+                            "data": "qty"
+                        },
+                        {
+                            "data": "price"
                         },
                         {
                             "data": "action"
@@ -60,7 +77,7 @@
                 event.preventDefault();
                 var formData = new FormData(this);
                 var id = $('#data_id').val();
-                var url = "{{ route('transaksi.store') }}";
+                var url = "{{ route('transaksi-item.store') }}";
                 if (id != '') {
                     //kirim id lewat form data 
                     formData.append('data_id', id);
@@ -113,7 +130,30 @@
                 })
             });
 
-            
+            // //edit
+            $('body').on('click', '.edit', function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                // $('#btnSave').html('Update Data')
+
+                var id = $(this).data('id');
+
+                $.get("{{ route('transaksi-item.index') }}" + '/' + id + '/edit', function(data) {
+                    console.log("data_id = " + data.id);
+                    $('#data_id').val(id);
+                    $('#name').val(data.name);
+                    $('#stock').val(data.stock);
+                    $('#capital').val(data.capital);
+                    $('#sell').val(data.sell);
+
+                })
+
+            });
 
 
             //del
@@ -136,7 +176,7 @@
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
-                            url: "{{ route('transaksi.store') }}" + '/' + id,
+                            url: "{{ route('transaksi-item.store') }}" + '/' + id,
 
                             success: function(data) {
                                 Swal.fire({
