@@ -31,13 +31,13 @@
             </a>
         </li>
 
-        {{-- <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('rule.index') ? 'active' : 'collapsed' }}" href="{{ route('rule.index') }}">
                 <i class="bi bi-grid"></i>
-                <span>Transaksi</span>
+                <span>Rule</span>
             </a>
         </li>
-
+        {{-- 
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('produk') ? 'active' : 'collapsed' }}" href="{{ route('produk') }}">
                 <i class="bi bi-grid"></i>
@@ -46,7 +46,7 @@
         </li> --}}
 
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
@@ -266,7 +266,7 @@
                 <i class="bi bi-file-earmark"></i>
                 <span>Blank</span>
             </a>
-        </li><!-- End Blank Page Nav -->
+        </li><!-- End Blank Page Nav --> --}}
 
     </ul>
 

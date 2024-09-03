@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Rule extends Model
 {
     use HasFactory;
+
+    protected $table = 'rules';
+
+    protected $fillable = [
+        'rule', 
+        'support', 
+        'confidence'
+    ];
 }

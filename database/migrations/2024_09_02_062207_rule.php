@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('rules', function (Blueprint $table) {
+            $table->id();
+            $table->string('rule');
+            $table->integer('support');
+            $table->integer('confidence');
+            $table->timestamps();
+        });
     }
 
     /**

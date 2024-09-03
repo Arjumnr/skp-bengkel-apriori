@@ -29,29 +29,73 @@ class TransactionsItemsController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         Product::updateOrCreate(
-    //             ['id' => $request->data_id],
-    //             [
-    //                 'name' => $request->name,
-    //                 'stock' => $request->stock,
-    //                 'capital' => $request->capital,
-    //                 'sell' => $request->sell,
-    //             ]
-    //         );
-    //         return response()->json(['data' => $request->all(), 'status' => 'success', 'message' => 'Save data successfully.', ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-    //     }
-    // }
+    public function store(Request $request)
+    {
+        try {
+        //     Product::updateOrCreate(
+        //         ['id' => $request->data_id],
+        //         [
+        //             'name' => $request->name,
+        //             'stock' => $request->stock,
+        //             'capital' => $request->capital,
+        //             'sell' => $request->sell,
+        //         ]
+        //     );
+        //     return response()->json(['data' => $request->all(), 'status' => 'success', 'message' => 'Save data successfully.', ]);
+        // } catch (\Exception $e) {
+        //     return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        // }
 
-    // public function edit($id)
-    // {
-    //     $data = Product::find($id);
-    //     return response()->json($data);
-    // }
+            // Simpan transaksi baru
+            foreach ($request->produk as $key => $produkId) {
+
+                $product = Product::find($produkId);
+
+                $quantity = $request->qty[$produkId] ?? 1; // Default ke 1 jika qty tidak ada
+
+
+                // Cek stok
+                if ($product->stock < $quantity) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => "Stok untuk produk {$product->name} tidak mencukupi."
+                    ]);
+                }
+
+                // Buat atau perbarui item transaksi
+                TransactionsItems::updateOrCreate(
+                    ['product_id' => $produkId, 'transaction_id' => $request->data_id],
+                    [
+                        'transaction_id' => $request->transaction_id,
+                        'product_id' => $request->product_id,
+                        'qty' => $product->qty,
+                        'price' => $product->price,
+                    ]
+                );
+
+                // Update stok produk
+                $product->stock -= $quantity;
+                $product->save();
+            }
+
+            return response()->json([
+                'data' => $request->all(),
+                'status' => 'success',
+                'message' => 'Data transaksi berhasil disimpan.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function edit($id)
+    {
+        $data = Product::find($id);
+        return response()->json($data);
+    }
 
 
     public function destroy($id)

@@ -18,21 +18,12 @@ Route::group(
             ['prefix' => 'admin'],
             function () {
                 
-                // Route::group(
-                //     ['prefix' => 'produk'],
-                //     function () {
+                
                         Route::resource('produk', 'ProductController');
                         Route::resource('transaksi', 'TransactionsController');
                         Route::resource('transaksi-item', 'TransactionsItemsController');
-                        // Route::get('/', 'ProductController@index')->name('produk.index');
-                        // Route::get('/data', 'ProductController@paginated')->name('product.data');
-                        // Route::post('/', 'ProductController@store')->name('produk.store');
-                        // Route::get('/{id}', 'ProductController@show')->name('product.show');
-                        // Route::put('/{id}', 'ProductController@update')->name('product.update');
-                        // Route::delete('/{id}', 'ProductController@destroy')->name('product.destroy');
-                  
-                    // }
-                // );
+                        Route::resource('rule', 'RuleController');
+                        
             }
         );
     }

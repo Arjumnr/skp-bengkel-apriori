@@ -2,35 +2,28 @@
     <script type="text/javascript">
         $(document).ready(function() {
             console.log('ready!');
-
-
             // $('#modalID').modal('show');
 
             var table = $('#data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('transaksi-item.index') }}",
+                ajax: "{{ route('rule.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'transaksi_id',
-                        name: 'name'
+                        data: 'rule',
+                        name: 'rule'
                     },
                     {
-                        data: 'product_id',
-                        name: 'name'
+                        data: 'support',
+                        name: 'support'
                     },
                     {
-                        data: 'qty',
-                        name: 'qty'
+                        data: 'cofidence',
+                        name: 'cofidence'
                     },
-                    {
-                        data: 'price',
-                        name: 'price'
-                    },
-
                     {
                         data: 'action',
                         name: 'action',
@@ -46,18 +39,15 @@
                 table = $('#data-table').DataTable();
             } else {
                 table = $('#data-table').DataTable({
-                    "ajax": "{{ route('transaksi-item.index') }}",
+                    "ajax": "{{ route('rule.index') }}",
                     "columns": [{
-                            "data": "transaksi_id"
+                            "data": "rule"
                         },
                         {
-                            "data": "product_id"
+                            "data": "support"
                         },
                         {
-                            "data": "qty"
-                        },
-                        {
-                            "data": "price"
+                            "data": "confidence"
                         },
                         {
                             "data": "action"
@@ -70,49 +60,18 @@
                 console.log('click');
                 $('#modal-form').trigger("reset");
                 $('#form').trigger("reset");
+                // $('#modal-form').modal('show');
+                // $('#form').attr('action', "{{ route('rule.store') }}");
             });
 
-
-
-            // Function to calculate total payment
-            function calculateTotal() {
-                let total = 0;
-                // Iterate through each checked product and calculate total
-                $('input[name^="produk"]:checked').each(function() {
-                    let productId = $(this).val();
-                    let qty = parseInt($(`input[name="qty[${productId}]"]`).val()) || 0;
-                    let price = parseFloat($(`input[name="qty[${productId}]"]`).closest('tr').find(
-                        'td:nth-child(4)').text().replace('Rp', '').replace(/\./g, '').trim()) || 0;
-
-                    // Calculate total price for each selected product
-                    total += qty * price;
-                });
-                // Set the calculated total to the Total Bayar input
-                $('#price').val(total.toLocaleString('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0
-                }));
-            }
-
-            // Event listener for qty input change
-            $('body').on('input', 'input[name^="qty"]', function() {
-                calculateTotal();
-            });
-
-            // Event listener for checkbox change (selecting product)
-            $('body').on('change', 'input[name^="produk"]', function() {
-                calculateTotal();
-            });
-
-            // Other existing event listeners and functions...
 
             $('#form').on('submit', function(event) {
                 event.preventDefault();
                 var formData = new FormData(this);
                 var id = $('#data_id').val();
-                var url = "{{ route('transaksi-item.store') }}";
+                var url = "{{ route('rule.store') }}";
                 if (id != '') {
+                    //kirim id lewat form data 
                     formData.append('data_id', id);
                 }
                 $.ajax({
@@ -134,6 +93,7 @@
                                 timer: 1500
                             }).then(function() {
                                 table.draw();
+
                             })
                         } else {
                             Swal.fire({
@@ -144,41 +104,54 @@
                                 timer: 1500
                             }).then(function() {
                                 table.draw();
+
                             })
                         }
                         $("#basicModal").removeClass("in");
                         $(".modal-backdrop").remove();
                         $("#basicModal").hide();
+
                         $('#form').trigger("reset");
+
                     },
                     error: function(data) {
                         console.log(data);
+
+
                     }
                 })
             });
 
-            // Edit event handler
+            // //edit
             $('body').on('click', '.edit', function() {
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
+                // $('#btnSave').html('Update Data')
+
                 var id = $(this).data('id');
 
-                $.get("{{ route('transaksi-item.index') }}" + '/' + id + '/edit', function(data) {
+                $.get("{{ route('rule.index') }}" + '/' + id + '/edit', function(data) {
+                    console.log("data_id = " + data.id);
                     $('#data_id').val(id);
-                    $('#name').val(data.name);
-                    $('#stock').val(data.stock);
-                    $('#capital').val(data.capital);
-                    $('#sell').val(data.sell);
+                    $('#rule').val(data.rule);
+                    $('#support').val(data.support);
+                    $('#confidence').val(data.confidence);
+
                 })
+
             });
 
-            // Delete event handler
+
+            //del
             $('body').on('click', '.delete', function() {
+               
                 var id = $(this).data("id");
+                console.log(id)
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -194,7 +167,8 @@
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
-                            url: "{{ route('transaksi-item.store') }}" + '/' + id,
+                            url: "{{ route('rule.store') }}" + '/' + id,
+
                             success: function(data) {
                                 Swal.fire({
                                     position: 'center',
@@ -205,14 +179,18 @@
                                 }).then(function() {
                                     table.draw();
                                 })
+
                             },
                             error: function(data) {
                                 console.log(data)
                             }
                         });
+
                     }
                 })
+
             });
+
         });
     </script>
 @endpush
