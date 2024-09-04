@@ -9,7 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 class ProductController extends Controller
 {
     public function index(Request $request){
-        $data =  Product::orderBy('id','DESC')->get();
+        $data =  Product::orderBy('stock','DESC')->get();
         $data =  Product::all();
         try {
             if ($request->ajax()) {

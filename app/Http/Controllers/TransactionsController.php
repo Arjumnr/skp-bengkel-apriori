@@ -10,7 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 class TransactionsController extends Controller
 {
     public function index(Request $request){
-        $data =  Transactions::all();
+        $data =  Transactions::orderBy('id', 'DESC')->get();
         try {
             if ($request->ajax()) {
                 return DataTables::of($data)
@@ -55,6 +55,7 @@ class TransactionsController extends Controller
     public function destroy($id)
     {
         try {
+            TransactionsItems::where('id', $id)->delete();
             Transactions::find($id)->delete();
             return response()->json(['status' => 'success', 'message' => 'Data deleted successfully.']);
         } catch (\Exception $e) {

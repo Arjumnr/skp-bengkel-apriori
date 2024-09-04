@@ -68,7 +68,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>40</h6>
+                                        <h6>{{ $trs }}</h6>
                                        
                                     </div>
                                 </div>
@@ -103,7 +103,7 @@
                                         <i class="bi bi-currency-dollar"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>20</h6>
+                                        <h6>{{ $tp }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                                         <i class="bi bi-people"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>10</h6>
+                                        <h6>{{ $tr }}</h6>
 
                                     </div>
                                 </div>

@@ -18,7 +18,12 @@
                     },
                     {
                         data: 'total_price',
-                        name: 'total_price'
+                        name: 'total_price',
+                        render: function(data, type, row) {
+                            //set Rp. 
+                            return 'Rp. ' + data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g,
+                                '$1.'); //number format to currency
+                        }
                     },
                     {
                         data: 'action',

@@ -24,8 +24,9 @@
                                         <th>Select</th>
                                         <th>Produk</th>
                                         <th>Stok</th>
-                                        <th>Jumlah </th>
+                                        <th>Harga </th>
                                         <th>Jumlah Pembelian</th>
+                                        <th>Total Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -38,7 +39,10 @@
                                         <td>{{ $produk->stock }}</td> <!-- Assuming $produk->stock exists -->
                                         <td>Rp {{ number_format($produk->sell, 0, ',', '.') }}</td>                                        <!-- Assuming $produk->price exists -->
                                         <td>
-                                            <input type="number" class="form-control" name="qty[{{ $produk->id }}]" min="1" ">
+                                            <input type="number" class="form-control" name="qty[{{ $produk->id }}]" min="1" max="{{ $produk->stock }}">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" name="price[{{ $produk->id }}]" readonly>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -47,8 +51,8 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="price" class="form-label">Total Bayar</label>
-                        <input type="text" class="form-control" id="price" name="price"
+                        <label for="total_price" class="form-label">Total Bayar</label>
+                        <input type="text" class="form-control" id="total_price" name="total_price"
                             placeholder="0" />
                     </div>
 
