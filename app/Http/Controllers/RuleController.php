@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Rule;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -9,8 +10,10 @@ use Yajra\DataTables\Facades\DataTables;
 class RuleController extends Controller
 {
     public function index(Request $request){
-        $data =  Rule::orderBy('id','DESC')->get();
-        $data =  Rule::all();
+        $data = Rule::with('get_product')->orderBy('id', 'DESC')->get();
+        $nameProduct = [];
+        
+        $dataProduk =  Product::all();
         try {
             if ($request->ajax()) {
                 return DataTables::of($data)
@@ -23,7 +26,8 @@ class RuleController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            return view('admin.rule.index', compact('data'));
+            // return response()->json(['data' => $data, 'dataProduk' => $dataProduk]);
+            return view('admin.rule.index', compact('data', 'dataProduk'));
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
@@ -31,24 +35,41 @@ class RuleController extends Controller
     public function store(Request $request)
     {
         try {
+            // Dapatkan produk yang dipilih dari request
+            $selectedProducts = $request->input('produk', []);
+            
+            // Gabungkan ID produk yang dipilih sebagai string (misalnya '1,2,3') atau simpan sebagai array jika diinginkan
+            $rule = implode(',', $selectedProducts);
+    
+            // Update atau create data dengan field sesuai
             Rule::updateOrCreate(
                 ['id' => $request->data_id],
                 [
-                    'rule' => $request->rule,
+                    'rule' => $rule, // Menyimpan rule sebagai string ID produk
                     'support' => $request->support,
                     'confidence' => $request->confidence,
                 ]
             );
-            return response()->json(['data' => $request->all(), 'status' => 'success', 'message' => 'Save data successfully.', ]);
+    
+            return response()->json([
+                'data' => $request->all(),
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan.',
+            ]);
+    
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
     public function edit($id)
     {
         $data = Rule::find($id);
-        return response()->json($data);
+        $dataProduk =  Product::all();
+        return response()->json(['data' => $data, 'dataProduk' => $dataProduk]);
     }
 
 

@@ -11,19 +11,25 @@
                         <input type="hidden" name="data_id" id="data_id">
                         <div class="mb-3">
                             <label for="name" class="form-label">Rule</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Enter your Produk" />
+                            @foreach ($dataProduk as $item)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="produk{{ $item->id }}" name="produk[]" value="{{ $item->id }}">
+                                <label class="form-check-label" for="produk{{ $item->id }}">
+                                    {{ $item->name }}
+                                </label>
+                            </div>
+                        @endforeach
                         </div>
 
                         <div class="mb-3">
-                            <label for="stock" class="form-label">Support</label>
-                            <input type="number" class="form-control" id="stock" name="stock"
-                                placeholder="Enter your Stok" />
+                            <label for="support" class="form-label">Support</label>
+                            <input type="number" class="form-control" id="support" name="support"
+                                placeholder="Enter your support" />
                         </div>
                         <div class="mb-3">
-                            <label for="capital" class="form-label">Confidence</label>
-                            <input type="number" class="form-control" id="capital" name="capital"
-                                placeholder="Enter your Harga Beli" />
+                            <label for="confidence" class="form-label">Confidence</label>
+                            <input type="number" class="form-control" id="confidence" name="confidence"
+                                placeholder="Enter your confidence" />
                         </div>
                     </form>
                 </div>

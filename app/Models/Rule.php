@@ -16,4 +16,8 @@ class Rule extends Model
         'support', 
         'confidence'
     ];
+
+    public function get_product(){
+        return $this->belongsTo(Product::class, 'rule', 'id');
+    }
 }

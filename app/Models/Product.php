@@ -16,4 +16,9 @@ class Product extends Model
         'sell', //keuntungan
 
     ];
+
+    public function rules()
+    {
+        return $this->belongsToMany(Rule::class, 'rule_product', 'product_id', 'rule_id');
+    }
 }

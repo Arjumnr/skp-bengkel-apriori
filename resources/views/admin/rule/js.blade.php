@@ -16,13 +16,14 @@
                         data: 'rule',
                         name: 'rule'
                     },
+
                     {
                         data: 'support',
                         name: 'support'
                     },
                     {
-                        data: 'cofidence',
-                        name: 'cofidence'
+                        data: 'confidence',
+                        name: 'confidence'
                     },
                     {
                         data: 'action',
@@ -43,6 +44,7 @@
                     "columns": [{
                             "data": "rule"
                         },
+
                         {
                             "data": "support"
                         },
@@ -124,32 +126,52 @@
 
             // //edit
             $('body').on('click', '.edit', function() {
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
-                // $('#btnSave').html('Update Data')
-
                 var id = $(this).data('id');
 
-                $.get("{{ route('rule.index') }}" + '/' + id + '/edit', function(data) {
-                    console.log("data_id = " + data.id);
-                    $('#data_id').val(id);
-                    $('#rule').val(data.rule);
-                    $('#support').val(data.support);
-                    $('#confidence').val(data.confidence);
+                $.get("{{ route('rule.edit', ':id') }}".replace(':id', id), function(data) {
+                    console.log("data_id = " + id);
+                    $('#data_id').val(data.data.id);
+                    $('#support').val(data.data.support);
+                    $('#confidence').val(data.data.confidence);
 
-                })
+                    // Clear previous options and checkbox selections
+                    $('input[name="produk[]"]').prop('checked', false);
 
+
+                    // Daftar ID produk yang ingin dicentang
+                    var productIdsToCheck = data.data.rule; // to array 
+                    console.log(productIdsToCheck);
+                    var productIdsToCheck = productIdsToCheck.split(',');
+
+                    // Iterasi melalui daftar ID produk yang ingin dicentang
+                    $.each(productIdsToCheck, function(index, productId) {
+                        console.log('Checking product ID:', productId);
+                        $('input[name="produk[]"][value="' + productId + '"]').prop(
+                            'checked', true);
+                    });
+
+
+
+
+
+                    // Update modal title if needed
+                    $('#modal-title').text('Edit Rule');
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    console.error('Edit request failed: ', textStatus, errorThrown);
+                });
             });
+
 
 
             //del
             $('body').on('click', '.delete', function() {
-               
+
                 var id = $(this).data("id");
                 console.log(id)
                 Swal.fire({
