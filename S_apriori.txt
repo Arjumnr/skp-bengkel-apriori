@@ -1,0 +1,464 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Waktu pembuatan: 06 Sep 2024 pada 20.25
+-- Versi server: 8.0.30
+-- Versi PHP: 8.1.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `apriori`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint UNSIGNED NOT NULL,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint UNSIGNED NOT NULL,
+  `reserved_at` int UNSIGNED DEFAULT NULL,
+  `available_at` int UNSIGNED NOT NULL,
+  `created_at` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `job_batches`
+--
+
+CREATE TABLE `job_batches` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `cancelled_at` int DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '0001_01_01_000000_create_users_table', 1),
+(2, '0001_01_01_000001_create_cache_table', 1),
+(3, '0001_01_01_000002_create_jobs_table', 1),
+(4, '2024_08_29_082609_product', 1),
+(5, '2024_08_29_082622_transactions', 1),
+(6, '2024_08_29_082630_transactions_items', 1),
+(7, '2024_09_02_062207_rule', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `product`
+--
+
+CREATE TABLE `product` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stock` int NOT NULL,
+  `capital` int NOT NULL,
+  `sell` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `product`
+--
+
+INSERT INTO `product` (`id`, `name`, `stock`, `capital`, `sell`, `created_at`, `updated_at`) VALUES
+(1, 'Oli Mesin', 19, 20000, 40000, NULL, NULL),
+(2, 'Filter Udara', 14, 15000, 20000, NULL, '2024-09-06 12:18:07'),
+(3, 'Aki', 9, 100000, 250000, NULL, '2024-09-06 12:18:07'),
+(4, 'Ban Luar', 8, 150000, 400000, NULL, NULL),
+(5, 'Ban Dalam', 12, 30000, 60000, NULL, NULL),
+(6, 'Lampu Depan', 5, 25000, 50000, NULL, NULL),
+(7, 'Kampas Rem', 23, 20000, 30000, NULL, '2024-09-06 12:19:33'),
+(8, 'Busi', 30, 15000, 15000, NULL, NULL),
+(9, 'Shockbreaker', 4, 70000, 180000, NULL, NULL),
+(10, 'Rantai', 10, 25000, 45000, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `rules`
+--
+
+CREATE TABLE `rules` (
+  `id` bigint UNSIGNED NOT NULL,
+  `rule` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `support` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `confidence` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `rules`
+--
+
+INSERT INTO `rules` (`id`, `rule`, `support`, `confidence`, `created_at`, `updated_at`) VALUES
+(1, 'Filter Udara and Aki', '20.00%', '75.00%', '2024-09-06 12:23:45', '2024-09-06 12:23:45');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('pJvvJVjdcemJHQffgw0Ti9jfgtDdNoiT0qHdlEgi', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiNmdvaUYyMDhjV0x6VVp6V25HQ1BFRFhGeThjUGtMNHBUNFNjSVFWayI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czo0MjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FkbWluL3RyYW5zYWtzaS1pdGVtIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wcm9kdWsiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1725654239);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_price` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `name`, `total_price`, `created_at`, `updated_at`) VALUES
+(1, 'Agus', 445000, '2024-09-01 00:00:00', '2024-09-01 00:00:00'),
+(2, 'Fatur', 640000, '2024-09-01 01:00:00', '2024-09-01 01:00:00'),
+(3, 'Cikal', 125000, '2024-09-01 02:00:00', '2024-09-01 02:00:00'),
+(4, 'Dika', 280000, '2024-09-01 03:00:00', '2024-09-01 03:00:00'),
+(5, 'Budi', 130000, '2024-09-01 04:00:00', '2024-09-01 04:00:00'),
+(6, 'Rina', 385000, '2024-09-01 05:00:00', '2024-09-01 05:00:00'),
+(7, 'Eka', 625000, '2024-09-01 06:00:00', '2024-09-01 06:00:00'),
+(8, 'Lina', 80000, '2024-09-01 07:00:00', '2024-09-01 07:00:00'),
+(9, 'Tari', 320000, '2024-09-01 08:00:00', '2024-09-01 08:00:00'),
+(10, 'Joni', 445000, '2024-09-01 09:00:00', '2024-09-01 09:00:00'),
+(11, 'Sari', 640000, '2024-09-01 10:00:00', '2024-09-01 10:00:00'),
+(12, 'Mika', 125000, '2024-09-01 11:00:00', '2024-09-01 11:00:00'),
+(13, 'Nina', 280000, '2024-09-01 12:00:00', '2024-09-01 12:00:00'),
+(14, 'Ika', 130000, '2024-09-01 13:00:00', '2024-09-01 13:00:00'),
+(15, 'Rudi', 385000, '2024-09-01 14:00:00', '2024-09-01 14:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `transactions_items`
+--
+
+CREATE TABLE `transactions_items` (
+  `id` bigint UNSIGNED NOT NULL,
+  `transaction_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `qty` int NOT NULL,
+  `price` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `transactions_items`
+--
+
+INSERT INTO `transactions_items` (`id`, `transaction_id`, `product_id`, `qty`, `price`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 60000, '2024-07-01 06:32:00', '2024-07-01 06:32:00'),
+(2, 1, 3, 1, 350000, '2024-07-01 07:05:00', '2024-07-01 07:05:00'),
+(3, 1, 2, 1, 35000, '2024-07-01 07:38:00', '2024-07-01 07:38:00'),
+(4, 2, 4, 1, 550000, '2024-07-02 01:15:00', '2024-07-02 01:15:00'),
+(5, 2, 5, 1, 90000, '2024-07-02 01:45:00', '2024-07-02 01:45:00'),
+(6, 3, 6, 1, 75000, '2024-07-03 02:00:00', '2024-07-03 02:00:00'),
+(7, 3, 7, 1, 50000, '2024-07-03 02:30:00', '2024-07-03 02:30:00'),
+(8, 4, 8, 1, 30000, '2024-07-04 00:45:00', '2024-07-04 00:45:00'),
+(9, 4, 9, 1, 250000, '2024-07-04 01:15:00', '2024-07-04 01:15:00'),
+(10, 5, 10, 1, 70000, '2024-07-05 03:00:00', '2024-07-05 03:00:00'),
+(11, 5, 1, 1, 60000, '2024-07-05 03:30:00', '2024-07-05 03:30:00'),
+(12, 6, 2, 1, 35000, '2024-07-06 04:00:00', '2024-07-06 04:00:00'),
+(13, 6, 3, 1, 350000, '2024-07-06 04:30:00', '2024-07-06 04:30:00'),
+(14, 7, 4, 1, 550000, '2024-07-07 05:00:00', '2024-07-07 05:00:00'),
+(15, 7, 6, 1, 75000, '2024-07-07 05:30:00', '2024-07-07 05:30:00'),
+(16, 8, 7, 1, 50000, '2024-07-08 06:00:00', '2024-07-08 06:00:00'),
+(17, 8, 8, 1, 30000, '2024-07-08 06:30:00', '2024-07-08 06:30:00'),
+(18, 9, 9, 1, 250000, '2024-07-09 07:00:00', '2024-07-09 07:00:00'),
+(19, 9, 10, 1, 70000, '2024-07-09 07:30:00', '2024-07-09 07:30:00'),
+(20, 10, 1, 1, 60000, '2024-07-10 08:00:00', '2024-07-10 08:00:00'),
+(21, 10, 2, 1, 35000, '2024-07-10 08:30:00', '2024-07-10 08:30:00'),
+(22, 11, 3, 1, 350000, '2024-07-11 09:00:00', '2024-07-11 09:00:00'),
+(23, 11, 5, 1, 90000, '2024-07-11 09:30:00', '2024-07-11 09:30:00'),
+(24, 12, 6, 1, 75000, '2024-07-12 10:00:00', '2024-07-12 10:00:00'),
+(25, 12, 7, 1, 50000, '2024-07-12 10:30:00', '2024-07-12 10:30:00'),
+(26, 13, 8, 1, 30000, '2024-07-13 11:00:00', '2024-07-13 11:00:00'),
+(27, 13, 9, 1, 250000, '2024-07-13 11:30:00', '2024-07-13 11:30:00'),
+(28, 14, 10, 1, 70000, '2024-07-14 12:00:00', '2024-07-14 12:00:00'),
+(29, 14, 1, 1, 60000, '2024-07-14 12:30:00', '2024-07-14 12:30:00'),
+(30, 15, 2, 1, 35000, '2024-07-15 13:00:00', '2024-07-15 13:00:00'),
+(31, 15, 3, 1, 350000, '2024-07-15 13:30:00', '2024-07-15 13:30:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `username`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'FDR Hans', 'fdrhans', '$2y$12$.0Ek2AXLQ/qjZgsKFq2bP.iMb53Z/9xcoc/vfSvWaQwzPAG80qOXe', NULL, NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indeks untuk tabel `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indeks untuk tabel `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indeks untuk tabel `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
+-- Indeks untuk tabel `job_batches`
+--
+ALTER TABLE `job_batches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indeks untuk tabel `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `rules`
+--
+ALTER TABLE `rules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Indeks untuk tabel `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `transactions_items`
+--
+ALTER TABLE `transactions_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_username_unique` (`username`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT untuk tabel `product`
+--
+ALTER TABLE `product`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT untuk tabel `rules`
+--
+ALTER TABLE `rules`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT untuk tabel `transactions_items`
+--
+ALTER TABLE `transactions_items`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
+
+--
+-- AUTO_INCREMENT untuk tabel `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
