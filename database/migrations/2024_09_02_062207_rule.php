@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('rules', function (Blueprint $table) {
             $table->id();
             $table->string('rule');
-            $table->integer('support');
-            $table->integer('confidence');
+            $table->string('support');
+            $table->string('confidence');
             $table->timestamps();
         });
     }

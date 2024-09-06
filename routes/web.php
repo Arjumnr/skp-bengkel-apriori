@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RuleController;
+use App\Http\Controllers\TransactionsItemsController;
 use Illuminate\Support\Facades\Route;
 //return to view dashboard
 // Route::get('/',  [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
@@ -21,8 +23,21 @@ Route::group(
                 
                         Route::resource('produk', 'ProductController');
                         Route::resource('transaksi', 'TransactionsController');
-                        Route::resource('transaksi-item', 'TransactionsItemsController');
-                        Route::resource('rule', 'RuleController');
+                        // Route::resource('transaksi-item', 'TransactionsItemsController');
+                        Route::resource('transaksi-item', 'TransactionsItemsController')->only([
+                            'index', 'create', 'store', 'edit', 'update', 'destroy'
+                        ]);
+                        Route::get('transaksi-item/rekomendasi/{id}', [TransactionsItemsController::class, 'rekomendasi'])->name('rekomendasi.index');
+
+                        Route::resource('rule', 'RuleController')->only([
+                            'index', 'create', 'store', 'edit', 'update', 'destroy'
+                        ]);
+                        // Custom route for frekuensi itemset 1
+                        Route::get('rule/frekuensi-itemset-1', [RuleController::class, 'frekuensiItemset1'])->name('frekuensi-itemset-1.index');
+                        Route::get('rule/support-minimum', [RuleController::class, 'supportMinimum'])->name('support-minimum.index');
+                        Route::get('rule/kombinasi-2-itemset', [RuleController::class, 'kombinasi2itemset'])->name('kombinasi-2-itemset.index');
+                        Route::get('rule/hitung', [RuleController::class, 'hitung'])->name('hitung.index');
+                        
                         
             }
         );

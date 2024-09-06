@@ -40,7 +40,7 @@
         </nav>
     </div>
     <section class="section">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-12">
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
@@ -51,7 +51,6 @@
                                 <i class="bi bi-calendar2-plus me-1"></i> Tambah
                             </button>
                         </div>
-
                         <!-- Tabel -->
                         <div class="table-responsive">
                             <table class="table table-striped" id="data-table">
@@ -69,6 +68,133 @@
                                 </tbody>
                             </table>
                         </div>
+
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <!-- Tombol Add dengan ikon -->
+                        <div class="d-flex mt-3 justify-content-center">
+                            <h2>Rule</h2>
+                        </div>
+                        <!-- Tabel -->
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="data-table-hitung">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Rule</th>
+                                        <th scope="col">Support</th>
+                                        <th scope="col">Confidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Isi data akan dimasukkan di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- KOMBINASI DUA ITEMSET --}}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <!-- Tombol Add dengan ikon -->
+                        <div class="d-flex mt-3 justify-content-center">
+                            <h2>Data Kombinasi 2 Itemset</h2>
+                        </div>
+                        <!-- Tabel -->
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="data-table-kombinasi-2-itemset">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Produk</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">Support</th>
+                                        <th scope="col">Frequent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Isi data akan dimasukkan di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- support-minimum --}}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <!-- Tombol Add dengan ikon -->
+                        <div class="d-flex mt-3 justify-content-center">
+                            <h2>Data Suport Minimum</h2>
+                        </div>
+                        <!-- Tabel -->
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="data-table-support-minimum">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Produk</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">Support</th>
+                                        <th scope="col">Frequent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Isi data akan dimasukkan di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- frekuensi itemset --}}
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <!-- Tombol Add dengan ikon -->
+                        <div class="d-flex mt-3 justify-content-center">
+                            <h2>Frekuensi Itemset</h2>
+                        </div>
+                        <!-- Tabel -->
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="data-table-frekuensi-itemset-1">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Produk</th>
+                                        <th scope="col">Jumlah Pembelian</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Isi data akan dimasukkan di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>

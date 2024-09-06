@@ -5,6 +5,10 @@
                 <h5 class="modal-title" id="modal-title">Form</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            {{-- <div class="alert alert-warning bg-warning border-0 alert-dismissible fade show" role="alert">
+                A simple warning alert with solid color—check it out!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div> --}}
             <div class="modal-body">
                 <form id="form" enctype="multipart/form-data">
                     @csrf
@@ -56,11 +60,7 @@
                             placeholder="0" />
                     </div>
 
-                    <div class="mb-3">
-                        <label for="rekomendasi" class="form-label">Rekomendasi</label>
-                        <input type="text" class="form-control" id="rekomendasi" name="rekomendasi"
-                            placeholder="Enter your rekomendasi" />
-                    </div>
+                  
                 </form>
             </div>
             <div class="modal-footer">

@@ -2,6 +2,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             console.log('ready!');
+            //hidden alert
+
+
 
 
             // $('#modalID').modal('show');
@@ -75,6 +78,33 @@
                 console.log('click');
                 $('#modal-form').trigger("reset");
                 $('#form').trigger("reset");
+                //jika produk di pilih munculkan rekondasi dri ajax rekomendasi 
+                $('input[name^="produk"]').on('change', function() {
+                    if ($(this).is(':checked')) {
+                        console.log($(this).val());
+                        var id = $(this).val();
+                        $.ajax({
+                            // Route::get('transaksi-item/rekomendasi/{id}', [TransactionsItemsController::class, 'rekomendasi'])->name('rekomendasi.index');
+
+                            url: "transaksi-item/rekomendasi/" + id,
+                            type: "GET",
+                            data: {
+                                id: id
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                //nanti alert di sni
+                                if (data.status == 'success') {
+                                    Swal.fire("Rekomendasikan Produk", data
+                                        .rekomendasi_name, "info");
+                                }
+
+                            },
+                        });
+
+
+                    }
+                });
             });
 
 
@@ -179,13 +209,13 @@
 
                 $.get("{{ route('transaksi-item.index') }}" + '/' + id + '/edit', function(data) {
                     console.log(JSON.stringify(data));
-                    
+
 
                     $('#data_id').val(id);
                     console.log(id);
                     $('#name').val(data.transaction.name);
                     $('#total_price').val(data.transaction
-                    .total_price); // Assuming this is 'Total Bayar'
+                        .total_price); // Assuming this is 'Total Bayar'
 
                     // Clear existing product checkboxes and quantities
                     $('input[name="produk[]"]').prop('checked', false);
@@ -198,14 +228,16 @@
                         // Set quantity for the specific product
                         $('input[name="qty[' + product.product_id + ']"]').val(product.qty);
                         // Set price for the specific product
-                        $('input[name="price[' + product.product_id + ']"]').val(product.price);
+                        $('input[name="price[' + product.product_id + ']"]').val(product
+                            .price);
                     });
 
 
                     //if produk is unchecked
                     $('input[name^="produk"]').on('change', function() {
                         if ($(this).is(':checked')) {
-                            $('input[name="qty[' + $(this).val() + ']"]').prop('disabled', false);
+                            $('input[name="qty[' + $(this).val() + ']"]').prop('disabled',
+                                false);
                         } else {
                             $('input[name="qty[' + $(this).val() + ']"]').val('');
                             $('input[name="price[' + $(this).val() + ']"]').val('');

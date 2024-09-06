@@ -55,8 +55,11 @@ class TransactionsController extends Controller
     public function destroy($id)
     {
         try {
-            TransactionsItems::where('id', $id)->delete();
-            Transactions::find($id)->delete();
+           // Hapus item dari tabel TransactionsItems
+            TransactionsItems::where('transaction_id', $id)->delete();
+            
+            // Hapus transaksi dari tabel Transactions
+            Transactions::findOrFail($id)->delete();
             return response()->json(['status' => 'success', 'message' => 'Data deleted successfully.']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
