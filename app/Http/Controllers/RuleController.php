@@ -135,7 +135,103 @@ class RuleController extends Controller
         }
     }
 
-    /**
+   
+
+
+    public function hitung(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                // Ambil semua transaksi
+                $transactions = DB::table('transactions_items')
+                    ->select('transaction_id', 'product_id')
+                    ->get()
+                    ->groupBy('transaction_id');
+
+                $itemSets = [];
+                $totalTransactions = $transactions->count();
+
+                // Hitung frekuensi kombinasi item dengan ukuran dari 2 sampai n
+                foreach ($transactions as $transaction) {
+                    $productIds = $transaction->pluck('product_id')->toArray();
+                    $count = count($productIds);
+
+                    for ($size = 2; $size <= $count; $size++) {
+                        $combinations = $this->getCombinations($productIds, $size);
+                        foreach ($combinations as $combination) {
+                            sort($combination); // Sort untuk memastikan konsistensi kunci
+                            $key = implode('-', $combination);
+
+                            if (!isset($itemSets[$key])) {
+                                $itemSets[$key] = 0;
+                            }
+                            $itemSets[$key]++;
+                        }
+                    }
+                }
+
+                // Hitung frekuensi itemset 1-item
+                $itemCounts = DB::table('transactions_items')
+                    ->select('product_id', DB::raw('COUNT(DISTINCT transaction_id) as count'))
+                    ->groupBy('product_id')
+                    ->pluck('count', 'product_id')
+                    ->toArray();
+
+                // Ambil nama produk
+                $productNames = DB::table('product')->pluck('name', 'id')->toArray();
+
+                // Hapus data lama dari tabel Rule
+                Rule::truncate();
+
+                // Hitung support dan confidence untuk itemset
+                $itemSets = collect($itemSets)->map(function ($count, $key) use ($totalTransactions, $productNames, $itemCounts) {
+                    $products = explode('-', $key);
+                    $productNamesArray = array_map(fn($id) => $productNames[$id] ?? 'Unknown', $products);
+                    $support = ($count / $totalTransactions) * 100;
+
+                    // Format support
+                    $supportFormatted = "{$count}/{$totalTransactions} x 100% = " . number_format($support, 2) . "%";
+
+                    // Hitung confidence hanya untuk itemset yang "Join"
+                    $antecedent = $products[0];
+                    $antecedentCount = isset($itemCounts[$antecedent]) ? $itemCounts[$antecedent] : $count;
+                    $confidence = ($antecedentCount > 0) ? ($count / $antecedentCount) * 100 : 0;
+
+                    // Format confidence
+                    $confidenceFormatted = "{$count}/{$antecedentCount} x 100% = " . number_format($confidence, 2) . "%";
+
+                    return [
+                        'rule' => implode(' && ', $productNamesArray),
+                        'support' => $supportFormatted,
+                        'confidence' => $confidenceFormatted,
+                    ];
+                })->filter() // Hapus itemset yang tidak valid
+                ->sortByDesc('support' . ' ' . 'confidence');
+
+                // Simpan aturan ke database
+                foreach ($itemSets as $itemSet) {
+                    Rule::updateOrCreate(
+                        ['rule' => $itemSet['rule']],
+                        [
+                            'support' => $itemSet['support'],
+                            'confidence' => $itemSet['confidence'],
+                        ]
+                    );
+                }
+
+                return DataTables::of($itemSets)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    
+    
+
+     /**
      * Menghasilkan kombinasi dari itemset
      *
      * @param array $items
@@ -162,92 +258,7 @@ class RuleController extends Controller
 
         return $result;
     }
-
-
-    public function hitung(Request $request)
-    {
-        try {
-            if ($request->ajax()) {
-                // Ambil semua transaksi
-                $transactions = DB::table('transactions_items')
-                    ->select('transaction_id', 'product_id')
-                    ->get()
-                    ->groupBy('transaction_id');
     
-                $itemSets = [];
-                $totalTransactions = $transactions->count();
-    
-                foreach ($transactions as $transaction) {
-                    $productIds = $transaction->pluck('product_id')->toArray();
-                    $count = count($productIds);
-    
-                    // Buat kombinasi 2-item
-                    for ($i = 0; $i < $count; $i++) {
-                        for ($j = $i + 1; $j < $count; $j++) {
-                            $item1 = $productIds[$i];
-                            $item2 = $productIds[$j];
-                            $key = $item1 < $item2 ? "$item1-$item2" : "$item2-$item1";
-    
-                            if (!isset($itemSets[$key])) {
-                                $itemSets[$key] = 0;
-                            }
-                            $itemSets[$key]++;
-                        }
-                    }
-                }
-    
-                // Hitung frekuensi itemset 1-item
-                $itemCounts = DB::table('transactions_items')
-                    ->select('product_id', DB::raw('COUNT(DISTINCT transaction_id) as count'))
-                    ->groupBy('product_id')
-                    ->pluck('count', 'product_id')
-                    ->toArray();
-    
-                // Ambil nama produk
-                $productNames = DB::table('product')->pluck('name', 'id')->toArray();
-
-                $dataRule=[];
-    
-                // Convert array to collection for easy manipulation
-                $itemSets = collect($itemSets)->map(function ($count, $key) use ($totalTransactions, $productNames, $itemCounts) {
-                    $products = explode('-', $key);
-                    $productNamesArray = array_map(fn($id) => $productNames[$id] ?? 'Unknown', $products);
-                    $support = ($count / $totalTransactions) * 100;
-    
-                    // Hitung confidence
-                    $antecedent = $products[0];
-                    $confidence = isset($itemCounts[$antecedent]) ? ($count / $itemCounts[$antecedent]) * 100 : 0;
-
-                    //hapus data Pada Tabel RUle
-                    Rule::truncate();
-
-                    return [
-                        'rule' => implode(' && ', $productNamesArray),
-                        'support' => number_format($support, 2) . '%',
-                        'confidence' => number_format($confidence, 2) . '%',
-                    ];
-                })->filter(function ($item) {
-                    return $item['support'] >= 20 && $item['confidence'] > 60;
-                })->sortByDesc('support');
-
-    
-                // Insert rules into the database
-                foreach ($itemSets as $itemSet) {
-                    Rule::create([
-                        'rule' => $itemSet['rule'],
-                        'support' => $itemSet['support'],
-                        'confidence' => $itemSet['confidence'],
-                    ]);
-                }
-                
-                return DataTables::of($itemSets)
-                    ->addIndexColumn()
-                    ->make(true);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-        }
-    }
 
 
 

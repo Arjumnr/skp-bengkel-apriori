@@ -19,7 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -97,8 +97,9 @@
                                     <!-- Isi data akan dimasukkan di sini -->
                                 </tbody>
                             </table>
+                            <p>Support (>=20%) = Seberapa sering itemset muncul</p>
+                            <p>Confidence (>=60%) = Seberapa sering aturan berlaku (dengan prasyarat)</p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -112,7 +113,7 @@
                     <div class="card-body">
                         <!-- Tombol Add dengan ikon -->
                         <div class="d-flex mt-3 justify-content-center">
-                            <h2>Data Kombinasi 2 Itemset</h2>
+                            <h2>Data Kombinasi Itemset</h2>
                         </div>
                         <!-- Tabel -->
                         <div class="table-responsive">
@@ -157,6 +158,7 @@
                                         <th scope="col">Qty</th>
                                         <th scope="col">Support</th>
                                         <th scope="col">Frequent</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>

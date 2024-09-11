@@ -165,61 +165,78 @@ class TransactionsItemsController extends Controller
     }
 
     public function rekomendasi($id)
-    {
-        try {
-            // Data JSON untuk testing
-            $rules = Rule::all()->toArray();
+{
+    try {
+        // Data JSON untuk testing
+        $rules = Rule::all()->toArray();
 
-            // Ambil data produk dari tabel produk
-            $productNames = DB::table('product')->pluck('name', 'id')->toArray();
+        // Ambil data produk dari tabel produk
+        $productNames = DB::table('product')->pluck('name', 'id')->toArray();
 
-            // Convert rules array to a collection
-            $rulesCollection = collect($rules);
+        // Convert rules array to a collection
+        $rulesCollection = collect($rules);
 
-            // Proses data untuk mendapatkan ID produk dari rule
-            $processedRules = $rulesCollection->map(function ($item) use ($productNames) {
-                $productNamesInRule = explode(' and ', $item['rule']);
-                $productIds = array_filter(array_keys($productNames), function ($id) use ($productNamesInRule, $productNames) {
-                    return in_array($productNames[$id], $productNamesInRule);
-                });
-
-                return [
-                    'rule' => array_values($productIds),
-                    'support' => $item['support'],
-                    'confidence' => $item['confidence'],
-                ];
+        // Proses data untuk mendapatkan ID produk dari rule
+        $processedRules = $rulesCollection->map(function ($item) use ($productNames) {
+            $productNamesInRule = explode(' && ', $item['rule']);
+            $productIds = array_filter(array_keys($productNames), function ($id) use ($productNamesInRule, $productNames) {
+                return in_array($productNames[$id], $productNamesInRule);
             });
 
-            // ID yang dikirim untuk rekomendasi
-            $requestedId = intval($id);
+            return [
+                'rule' => array_values($productIds),
+                'support' => $item['support'],
+                'confidence' => $item['confidence'],
+            ];
+        });
 
-            // Filter rules yang mengandung ID yang dikirim
-            $filteredRules = $processedRules->filter(function ($rule) use ($requestedId) {
-                // Cek jika ID yang dikirim ada di dalam rule
-                return in_array($requestedId, $rule['rule']);
-            });
+        // ID yang dikirim untuk rekomendasi
+        $requestedId = intval($id);
 
-            // Mengambil ID produk pasangan yang relevan
-            $relevantId = $filteredRules->flatMap(function ($rule) use ($requestedId) {
-                return $rule['rule'];
-            })->reject(function ($id) use ($requestedId) {
-                return $id == $requestedId;
-            })->first(); // Ambil ID pertama yang relevan
+       
 
-            //get name produk from id
-            $relevantName = $productNames[$relevantId];
+        // Filter rules yang mengandung ID yang dikirim dan memiliki support >= 20%
+        $filteredRules = $processedRules->filter(function ($rule) use ($requestedId) {
+                    // Ambil nilai support dalam bentuk string, misalnya "11.39%"
+            $supportString = $rule['support'];
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $filteredRules->values(),
-                'rekomendasi_id' => $relevantId,
-                'rekomendasi_name' => $relevantName,
-                'message' => 'Data processed successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-        }
+            // Hilangkan simbol % dan hitung sebagai desimal
+            $supportValue = floatval(str_replace('%', '', explode('=', $supportString)[1])) / 100;
+
+            // Cek jika ID yang diminta ada dalam rule dan nilai support >= 0.20 (20%)
+            return in_array($requestedId, $rule['rule']) && $supportValue >= 0.20;
+        });
+        
+    
+
+        // Mengambil ID produk pasangan yang relevan
+        $relevantIds = $filteredRules->flatMap(function ($rule) use ($requestedId) {
+            return $rule['rule'];
+        })->reject(function ($id) use ($requestedId) {
+            return $id == $requestedId;
+        })->unique(); // Ambil ID yang unik
+
+        // Get name produk from id
+        $recommendations = $relevantIds->map(function ($id) use ($productNames) {
+            return [
+                'id' => $id,
+                'name' => $productNames[$id] ?? 'Unknown'
+            ];
+        });
+
+        // return response()->json($recommendations);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $filteredRules->values(),
+            'rekomendasi_name' => $recommendations,
+            'message' => 'Data processed successfully.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
     }
+}
+
 
     
     

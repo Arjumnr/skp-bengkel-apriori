@@ -92,13 +92,20 @@
                                 id: id
                             },
                             success: function(data) {
-                                console.log(data);
-                                //nanti alert di sni
-                                if (data.status == 'success') {
-                                    Swal.fire("Rekomendasikan Produk", data
-                                        .rekomendasi_name, "info");
+                                console.log(data.rekomendasi_name);
+                                // Mengecek jika status adalah success dan data tidak kosong
+                                if (data.status == 'success' && data.data.length > 0) {
+                                    // Mengakses nama produk berdasarkan key '1' di objek rekomendasi_name
+                                    if (data.rekomendasi_name["0"] == null) {
+                                        var recommendedName = data.rekomendasi_name["1"].name;
+                                    }else if (data.rekomendasi_name["1"] == null) {
+                                        var recommendedName = data.rekomendasi_name["0"].name;
+                                    }
+                                  
+                                    // Menampilkan alert menggunakan Swal
+                                    Swal.fire("Rekomendasikan Produk", recommendedName,
+                                        "info");
                                 }
-
                             },
                         });
 
