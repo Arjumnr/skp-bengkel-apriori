@@ -35,7 +35,7 @@ Route::group(
                         // Custom route for frekuensi itemset 1
                         Route::get('rule/frekuensi-itemset-1', [RuleController::class, 'frekuensiItemset1'])->name('frekuensi-itemset-1.index');
                         Route::get('rule/support-minimum', [RuleController::class, 'supportMinimum'])->name('support-minimum.index');
-                        Route::get('rule/kombinasi-2-itemset', [RuleController::class, 'kombinasi2itemset'])->name('kombinasi-2-itemset.index');
+                        Route::get('rule/kombinasi-itemset', [RuleController::class, 'kombinasiItemset'])->name('kombinasi-itemset.index');
                         Route::get('rule/hitung', [RuleController::class, 'hitung'])->name('hitung.index');
                         
                         

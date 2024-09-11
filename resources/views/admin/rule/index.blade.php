@@ -116,7 +116,7 @@
                         </div>
                         <!-- Tabel -->
                         <div class="table-responsive">
-                            <table class="table table-striped" id="data-table-kombinasi-2-itemset">
+                            <table class="table table-striped" id="data-table-kombinasi-itemset">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

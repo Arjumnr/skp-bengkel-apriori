@@ -27,7 +27,7 @@ class RuleController extends Controller
             if ($request->ajax()) {
                 $data = DB::table('transactions_items')
                     ->join('product', 'transactions_items.product_id', '=', 'product.id')
-                    ->select('product.name as product_name', DB::raw('SUM(transactions_items.qty) as purchase_count'))
+                    ->select('product.name as product_name', DB::raw('COUNT(transactions_items.qty) as purchase_count'))
                     ->groupBy('product.name')
                     ->orderBy('purchase_count', 'desc')
                     ->get();
@@ -50,7 +50,7 @@ class RuleController extends Controller
                 
                 $data = DB::table('transactions_items')
                     ->join('product', 'transactions_items.product_id', '=', 'product.id')
-                    ->select('product.name as itemset', DB::raw('SUM(transactions_items.qty) as qty'))
+                    ->select('product.name as itemset', DB::raw('COUNT(transactions_items.qty) as qty'))
                     ->groupBy('product.name')
                     ->orderBy('qty', 'desc')
                     ->get()
@@ -77,7 +77,7 @@ class RuleController extends Controller
         }
     }
 
-    public function kombinasi2itemset(Request $request)
+    public function kombinasiItemset(Request $request)
     {
         try {
             if ($request->ajax()) {
@@ -94,12 +94,12 @@ class RuleController extends Controller
                     $productIds = $transaction->pluck('product_id')->toArray();
                     $count = count($productIds);
 
-                    // Buat kombinasi 2-item
-                    for ($i = 0; $i < $count; $i++) {
-                        for ($j = $i + 1; $j < $count; $j++) {
-                            $item1 = $productIds[$i];
-                            $item2 = $productIds[$j];
-                            $key = $item1 < $item2 ? "$item1-$item2" : "$item2-$item1";
+                    // Buat kombinasi item dengan panjang dari 2 sampai n
+                    for ($size = 2; $size <= $count; $size++) {
+                        $combinations = $this->getCombinations($productIds, $size);
+                        foreach ($combinations as $combination) {
+                            sort($combination); // Sort untuk memastikan konsistensi kunci
+                            $key = implode('-', $combination);
 
                             if (!isset($itemSets[$key])) {
                                 $itemSets[$key] = 0;
@@ -119,7 +119,7 @@ class RuleController extends Controller
                     $support = ($count / $totalTransactions) * 100;
 
                     return [
-                        'itemset' => implode(' and ', $productNamesArray),
+                        'itemset' => implode(' && ', $productNamesArray),
                         'qty' => $count,
                         'support' => number_format($support, 2) . '%',
                         'frequent' => $support >= 20 ? 'Join' : 'Prune'
@@ -131,9 +131,38 @@ class RuleController extends Controller
                     ->make(true);
             }
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage(), 'line' => $e->getLine()]);
         }
     }
+
+    /**
+     * Menghasilkan kombinasi dari itemset
+     *
+     * @param array $items
+     * @param int $size
+     * @return array
+     */
+    private function getCombinations(array $items, int $size)
+    {
+        $result = [];
+
+        if ($size == 1) {
+            foreach ($items as $item) {
+                $result[] = [$item];
+            }
+        } else {
+            for ($i = 0; $i < count($items) - $size + 1; $i++) {
+                $item = $items[$i];
+                $remainingItems = array_slice($items, $i + 1);
+                foreach ($this->getCombinations($remainingItems, $size - 1) as $combination) {
+                    $result[] = array_merge([$item], $combination);
+                }
+            }
+        }
+
+        return $result;
+    }
+
 
     public function hitung(Request $request)
     {
@@ -193,7 +222,7 @@ class RuleController extends Controller
                     Rule::truncate();
 
                     return [
-                        'rule' => implode(' and ', $productNamesArray),
+                        'rule' => implode(' && ', $productNamesArray),
                         'support' => number_format($support, 2) . '%',
                         'confidence' => number_format($confidence, 2) . '%',
                     ];

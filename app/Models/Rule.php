@@ -20,4 +20,9 @@ class Rule extends Model
     public function get_product(){
         return $this->belongsTo(Product::class, 'rule', 'id');
     }
+
+    // //delete
+    // public function delete(){
+    //     return $this->delete();
+    // }
 }

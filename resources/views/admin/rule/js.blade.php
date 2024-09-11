@@ -268,11 +268,11 @@
                 ],
             });
 
-            var tableKombinasi2Itemset = $('#data-table-kombinasi-2-itemset').DataTable({
+            var tableKombinasi2Itemset = $('#data-table-kombinasi-itemset').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('kombinasi-2-itemset.index') }}",
+                    url: "{{ route('kombinasi-itemset.index') }}",
                     data: function(d) {
                         // Tambahkan parameter tambahan jika diperlukan
                     }
